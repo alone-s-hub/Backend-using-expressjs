@@ -1,6 +1,7 @@
 import User from "../Model/userModel.js";
 
 export const create = async (req, res) => {
+  // Create a new user//post method
   try {
     const userData = new User(req.body);
     const { email } = userData;
@@ -17,6 +18,7 @@ export const create = async (req, res) => {
 };
 
 export const fetch = async (req, res) => {
+  // Fetch all users//get method
   try {
     const users = await User.find();
     if (!users) {
@@ -29,11 +31,12 @@ export const fetch = async (req, res) => {
 };
 
 export const update = async (req, res) => {
+  // Update user by ID//put method
   try {
     const id = req.params.id;
     const userExist = await User.findById({ _id: id });
     if (!userExist) {
-      return res.status(404).json({ message: "User not found"});
+      return res.status(404).json({ message: "User not found" });
     }
     const updateUser = await User.findByIdAndUpdate(id, req.body, {
       new: true,
@@ -45,16 +48,16 @@ export const update = async (req, res) => {
 };
 
 export const deleteUser = async (req, res) => {
-    try {
-        const id = req.params.id;
-        const userExist = await User.findById({ _id: id });
-        if (!userExist) {
-          return res.status(404).json({ message: "User not found" });
-        }
-        await User.findByIdAndDelete(id);
-        res.status(201).json({ message: "User deleted successfully" });
-    } catch (error) {
-        res.status(500).json({ error: "Internal server error" });
-        
+  // Delete user by ID//delete method
+  try {
+    const id = req.params.id;
+    const userExist = await User.findById({ _id: id });
+    if (!userExist) {
+      return res.status(404).json({ message: "User not found" });
     }
-}
+    await User.findByIdAndDelete(id);
+    res.status(201).json({ message: "User deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
